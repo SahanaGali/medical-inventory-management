@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Employee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/emp.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 40%;
+            /* max-width: 59%; */
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffffc5;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], input[type="email"], input[type="submit"], input[type="file"] {
+            width: 96%;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .home-button svg {
+            margin-right: 8px;
+            fill: #fff;
+        }
+
+        .home-button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <button class="home-button" onclick="window.location.href='{% url 'admin_dashboard' %}'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
+            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
+        </svg>
+        Employee
+    </button>
+
+    <div class="container">
+        <h1>Add Employee</h1>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="user_name">UserName</label>
+                <input type="text" name="user_name" id="user_name">
+            </div>
+            <div class="form-group">
+                <label for="profile_picture">Profile Picture</label>
+                <!-- <input type="file" name="profile_picture" id="profile_picture"> -->
+                 {{form.profile_picture}}
+            </div>
+            <div class="form-group">
+                <label for="emp_id">Employee ID</label>
+                <!-- <input type="text" name="emp_id" id="emp_id"> -->
+                 {{form.emp_id}}
+            </div>
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <!-- <input type="text" name="first_name" id="first_name"> -->
+                 {{form.first_name}}
+            </div>
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <!-- <input type="text" name="last_name" id="last_name"> -->
+                 {{form.last_name}}
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <!-- <input type="text" name="address" id="address"> -->
+                 {{form.address}}
+            </div>
+            <div class="form-group">
+                <label for="phone_number">Phone Number</label>
+                <!-- <input type="text" name="phone_number" id="phone_number"> -->
+                 {{form.phone_number}}
+            <div class="error">{{ form.phone_number.errors }}</div>
+
+            </div>
+            <div class="form-group">
+                <label for="salary">CTC</label>
+                <!-- <input type="text" name="salary" id="salary"> -->
+                 {{form.salary}}
+            </div>
+            <div class="form-group">
+                <label for="mail_id">Mail ID</label>
+                <!-- <input type="email" name="mail_id" id="mail_id"> -->
+                 {{form.mail_id}}
+            </div>
+            
+            <input type="submit" value="submit">
+        </form>
+    </div>
+</body>
+</html>

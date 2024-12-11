@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Data List</title>
+</head>
+<body>
+    <h1>Email Data List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Tablet</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in email_data %}
+            <tr>
+                <td>{{ data.name }}</td>
+                <td>{{ data.phone }}</td>
+                <td>{{ data.tablet }}</td>
+                <td>{{ data.price }}</td>
+                <td>{{ data.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

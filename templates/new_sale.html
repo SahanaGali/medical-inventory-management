@@ -1,0 +1,629 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Sale</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/sn.jpeg' %}") no-repeat center center fixed;
+            background-color: #f4f4f4;
+            padding: 20px;
+            background-size: cover;
+        }
+
+        .container {
+            background: rgba(241, 246, 245, 0.726);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            width: 700px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .add-tablet-btn {
+            align-self: flex-start;
+        }
+
+        #customer-image {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            max-height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #245be6d2;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .home-button svg {
+            margin-right: 8px;
+            fill: #fff;
+        }
+
+        .home-button:hover {
+            background-color: #0859bc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+    <button class="home-button" onclick="window.location.href='{% url 'admin_dashboard' %}'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
+            <path fill-rule="evenodd"
+                d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
+        </svg>
+        Sale
+    </button>
+
+    <img id="customer-image" src="" alt="">
+
+    <div class="container">
+        <h1>New Sale</h1>
+        <form id="form-container" method="POST">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <th><label for="{{ s_form.customer.id_for_label }}">Customer Name</label></th>
+                    <th><label for="{{ s_form.phone.id_for_label }}">Phone Number</label></th>
+                    <th><label for="{{ s_form.confirmed.id_for_label }}">Sale Option</label></th>
+                </tr>
+                <tr>
+                    <td>{{ s_form.customer }}</td>
+                    <td>{{ s_form.phone }}</td>
+                    <td>{{ s_form.confirmed }}</td>
+                </tr>
+            </table>
+            {{ sale_formset.management_form }}
+            {% for form in sale_formset %}
+            <div class="bird-form">
+                <table>
+                    <tr>
+                        <th><label for="{{ form.medicine.id_for_label }}">Medicine Name</label></th>
+                        <th>                <label for="{{ form.price.id_for_label }}">Price</label></th>
+                        <th>                <label for="{{ form.quantity.id_for_label }}">Quantity</label></th>
+                        <th>                <label for="{{ form.discount.id_for_label }}">Discount (%)</label></th>
+                        <th><label for="{{ form.total.id_for_label }}">Sub Total</label></th>
+
+                    </tr>
+                    <tr>
+                        <td>{{ form.medicine }}</td>
+                        <td>{{ form.price }}</td>
+                        <td>{{ form.quantity }}</td>
+                        <td>{{ form.discount }}</td>
+                        <td>{{ form.sub_total }}</td>
+                    </tr>
+                </table>
+  
+            </div>
+            {% endfor %}
+            <button id="add-form" type="button">Add Another Tablet</button>
+            <label for="{{ s_form.total.id_for_label }}">Total</label>
+            {{ s_form.total }}
+            <button type="submit">Submit</button>
+        </form>
+        <button type="button" onclick="downloadPDF()">Download PDF</button>
+
+        <script>
+            $(document).ready(function () {
+                $('#id_customer').on('change', function () {
+                    var customerId = $(this).val();
+                    if (customerId) {
+                        $.ajax({
+                            url: '{% url "get_customer_details" %}',
+                            data: {
+                                'customer_id': customerId
+                            },
+                            success: function (data) {
+                                $('#id_phone').val(data.phone);
+                                if (data.image_url) {
+                                    $('#customer-image').attr('src', data.image_url);
+                                } else {
+                                    $('#customer-image').attr('src', '{% static "images/profile.jpeg" %}');
+                                }
+                            }
+                        });
+                    } else {
+                        $('#id_phone').val('');
+                        $('#customer-image').attr('src', '{% static "images/profile.jpeg" %}');
+                    }
+                });
+            });
+
+            $(document).ready(function () {
+                $('#form-container').on('change', '[id$=medicine]', function () {
+                    var $this = $(this);
+                    var medicineId = $this.val();
+                    if (medicineId) {
+                        $.ajax({
+                            url: '{% url "get_medicine_price" %}',
+                            data: {
+                                'medicine_id': medicineId
+                            },
+                            success: function (data) {
+                                $this.closest('.bird-form').find('[id$=price]').val(data.price);
+                            }
+                        });
+                    } else {
+                        $this.closest('.bird-form').find('[id$=price]').val('');
+                    }
+                });
+            });
+
+            function downloadPDF() {
+                const form = document.getElementById('form-container');
+                const formData = new FormData(form);
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '{% url "new_sale" %}?download=true', true);
+                xhr.responseType = 'blob';
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        const blob = new Blob([xhr.response], { type: 'application/pdf' });
+                        const link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'sale_data.pdf';
+                        link.click();
+                        alert("Pdf Downloaded successfully!");
+                    }
+                };
+                xhr.send(formData);
+            }
+
+            let birdForm = document.querySelectorAll(".bird-form");
+            let container = document.querySelector("#form-container");
+            let addButton = document.querySelector("#add-form");
+            let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
+            let totalField = document.querySelector("#id_total"); // Assuming this is the ID for the total field
+            let totalAmountField = document.querySelector("#id_total");
+            let formNum = birdForm.length - 1;
+            addButton.addEventListener('click', addForm);
+
+            function addForm(e) {
+                e.preventDefault();
+
+                let newForm = birdForm[0].cloneNode(true);
+                let formRegex = RegExp(`form-(\\d){1}-`, 'g');
+
+                formNum++;
+                newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`);
+                container.insertBefore(newForm, addButton);
+
+                totalForms.setAttribute('value', `${formNum + 1}`);
+                addEventListeners(newForm);
+            }
+
+            // Event listener to handle input changes for dynamic forms
+    container.addEventListener('input', updateTotal);
+
+function updateTotal(e) {
+    if (e.target && e.target.matches('input[type="number"]')) {
+        let priceField = e.target.closest('tr').querySelector('input[name$="price"]');
+        let quantityField = e.target.closest('tr').querySelector('input[name$="quantity"]');
+        let discountField = e.target.closest('tr').querySelector('input[name$="discount"]');
+        let subTotalField = e.target.closest('tr').querySelector('input[name$="sub_total"]');
+
+        let price = parseFloat(priceField.value) || 0;
+        let quantity = parseFloat(quantityField.value) || 0;
+        let discount = parseInt(discountField.value) || 0;
+        let subTotal = price * quantity * (1 - discount / 100);
+
+        subTotalField.value = subTotal.toFixed(2);
+        updateTotalAmount();
+    }
+}
+
+// Function to update total amount field
+function updateTotalAmount() {
+    let total = 0;
+    document.querySelectorAll('input[name$="sub_total"]').forEach(function(subTotalField) {
+        total += parseFloat(subTotalField.value) || 0;
+    });
+    totalAmountField.value = total.toFixed(2);
+}
+
+// Initial call to set up event listeners for existing forms
+birdForm.forEach(form => addEventListeners(form));
+
+
+
+        </script>
+
+    </div>
+</body>
+
+</html>  -->
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Sale</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/sn.jpeg' %}") no-repeat center center fixed;
+            background-color: #f4f4f4;
+            padding: 20px;
+            background-size: cover;
+        }
+
+        .container {
+            background: rgba(241, 246, 245, 0.726);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            width: 850px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /* Custom button styles */
+        .btn-primary {
+            background-color: #007bff; /* Bootstrap primary blue */
+            color: #fff; /* White text color */
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .btn-success {
+            background-color: #28a745; /* Bootstrap success green */
+            color: #fff; /* White text color */
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        .btn-info {
+            background-color: #17a2b8; /* Bootstrap info cyan */
+            color: #fff; /* White text color */
+            border: none;
+        }
+
+        .btn-info:hover {
+            background-color: #138496; /* Darker cyan on hover */
+        }
+
+        .btn-warning {
+            background-color: #ffc107; /* Bootstrap warning yellow */
+            color: #212529; /* Dark text color */
+            border: none;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800; /* Darker yellow on hover */
+        }
+
+        .btn-danger {
+            background-color: #dc3545; /* Bootstrap danger red */
+            color: #fff; /* White text color */
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .add-tablet-btn {
+            align-self: flex-start;
+        }
+
+        #customer-image {
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            max-height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #245be6d2;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .home-button svg {
+            margin-right: 8px;
+            fill: #fff;
+        }
+
+        .home-button:hover {
+            background-color: #0859bc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+    <button class="home-button" onclick="window.location.href='{% url 'admin_dashboard' %}'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z" />
+            <path fill-rule="evenodd"
+                d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z" />
+        </svg>
+        Sale
+    </button>
+
+    <img id="customer-image" src="" alt="">
+
+    <div class="container">
+        <h1>New Sale</h1>
+        <form id="form-container" method="POST">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <th><label for="{{ s_form.customer.id_for_label }}">Customer Name</label></th>
+                    <th><label for="{{ s_form.phone.id_for_label }}">Phone Number</label></th>
+                    <th><label for="{{ s_form.confirmed.id_for_label }}">Sale Option</label></th>
+                </tr>
+                <tr>
+                    <td>{{ s_form.customer }}</td>
+                    <td>{{ s_form.phone }}</td>
+                    <td>{{ s_form.confirmed }}</td>
+                </tr>
+            </table>
+            {{ sale_formset.management_form }}
+            {% for form in sale_formset %}
+            <div class="bird-form">
+                <table>
+                    <tr>
+                        <th><label for="{{ form.medicine.id_for_label }}">Medicine Name</label></th>
+                        <th><label for="{{ form.price.id_for_label }}">Price</label></th>
+                        <th><label for="{{ form.quantity.id_for_label }}">Quantity</label></th>
+                        <th><label for="{{ form.discount.id_for_label }}">Discount (%)</label></th>
+                        <th><label for="{{ form.sub_total.id_for_label }}">Sub Total</label></th>
+                    </tr>
+                    <tr>
+                        <td>{{ form.medicine }}</td>
+                        <td>{{ form.price }}</td>
+                        <td>{{ form.quantity }}</td>
+                        <td>{{ form.discount }}</td>
+                        <td>{{ form.sub_total }}</td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
+            <button id="add-form" type="button" class="btn btn-primary">Add Another Tablet</button><br>
+            <label for="{{ s_form.total.id_for_label }}">Total</label>
+            {{ s_form.total }}
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form><br>
+        <button type="button" class="btn btn-info" onclick="downloadPDF()">Download PDF</button>
+
+        <script>
+            $(document).ready(function () {
+                $('#id_customer').on('change', function () {
+                    var customerId = $(this).val();
+                    if (customerId) {
+                        $.ajax({
+                            url: '{% url "get_customer_details" %}',
+                            data: {
+                                'customer_id': customerId
+                            },
+                            success: function (data) {
+                                $('#id_phone').val(data.phone);
+                                if (data.image_url) {
+                                    $('#customer-image').attr('src', data.image_url);
+                                } else {
+                                    $('#customer-image').attr('src', '{% static "images/profile.jpeg" %}');
+                                }
+                            }
+                        });
+                    } else {
+                        $('#id_phone').val('');
+                        $('#customer-image').attr('src', '{% static "images/profile.jpeg" %}');
+                    }
+                });
+            });
+
+            $(document).ready(function () {
+                $('#form-container').on('change', '[id$=medicine]', function () {
+                    var $this = $(this);
+                    var medicineId = $this.val();
+                    if (medicineId) {
+                        $.ajax({
+                            url: '{% url "get_medicine_price" %}',
+                            data: {
+                                'medicine_id': medicineId
+                            },
+                            success: function (data) {
+                                $this.closest('.bird-form').find('[id$=price]').val(data.price);
+                            }
+                        });
+                    } else {
+                        $this.closest('.bird-form').find('[id$=price]').val('');
+                    }
+                });
+            });
+
+            function downloadPDF() {
+                const form = document.getElementById('form-container');
+                const formData = new FormData(form);
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '{% url "new_sale" %}?download=true', true);
+                xhr.responseType = 'blob';
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        const blob = new Blob([xhr.response], { type: 'application/pdf' });
+                        const link = document.createElement('a');
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'sale_data.pdf';
+                        link.click();
+                        alert("Pdf Downloaded successfully!");
+                    }
+                };
+                xhr.send(formData);
+            }
+
+            let birdForm = document.querySelectorAll(".bird-form");
+            let container = document.querySelector("#form-container");
+            let addButton = document.querySelector("#add-form");
+            let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
+            let totalField = document.querySelector("#id_total"); // Assuming this is the ID for the total field
+            let totalAmountField = document.querySelector("#id_total");
+            let formNum = birdForm.length - 1;
+            addButton.addEventListener('click', addForm);
+
+            function addForm(e) {
+                e.preventDefault();
+
+                let newForm = birdForm[0].cloneNode(true);
+                let formRegex = RegExp(`form-(\\d){1}-`, 'g');
+
+                formNum++;
+                newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`);
+                container.insertBefore(newForm, addButton);
+
+                totalForms.setAttribute('value', `${formNum + 1}`);
+                addEventListeners(newForm);
+            }
+
+            // Event listener to handle input changes for dynamic forms
+            container.addEventListener('input', updateTotal);
+
+            function updateTotal(e) {
+                if (e.target && e.target.matches('input[type="number"]')) {
+                    let priceField = e.target.closest('tr').querySelector('input[name$="price"]');
+                    let quantityField = e.target.closest('tr').querySelector('input[name$="quantity"]');
+                    let discountField = e.target.closest('tr').querySelector('input[name$="discount"]');
+                    let subTotalField = e.target.closest('tr').querySelector('input[name$="sub_total"]');
+
+                    let price = parseFloat(priceField.value) || 0;
+                    let quantity = parseFloat(quantityField.value) || 0;
+                    let discount = parseInt(discountField.value) || 0;
+                    let subTotal = price * quantity * (1 - discount / 100);
+
+                    subTotalField.value = subTotal.toFixed(2);
+                    updateTotalAmount();
+                }
+            }
+
+            // Function to update total amount field
+            function updateTotalAmount() {
+                let total = 0;
+                document.querySelectorAll('input[name$="sub_total"]').forEach(function (subTotalField) {
+                    total += parseFloat(subTotalField.value) || 0;
+                });
+                totalAmountField.value = total.toFixed(2);
+            }
+
+            // Initial call to set up event listeners for existing forms
+            birdForm.forEach(form => addEventListeners(form));
+        </script>
+
+    </div>
+</body>
+
+</html>

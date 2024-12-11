@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            background: url("{% static 'images/em.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 80%;
+            margin-top: 20px;
+            background: #5f6364be;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .img-fluid {
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 3px;
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .home-button svg {
+            margin-right: 8px;
+            fill: #fff;
+        }
+
+        .home-button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="home-button" onclick="window.location.href='{% url 'admin_dashboard' %}'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
+            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
+        </svg>
+        Employee
+    </button>
+
+
+    <div class="container">
+        <a href="{% url 'add_employee' %}" class="btn">Add Employee</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Emp ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Mail ID</th>
+                    <th>Address</th>
+                 
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in emp %}
+                <tr>
+                    <td>
+                        <img src="{% if i.profile_picture %}{{ i.profile_picture.url }}{% else %}{% static 'images/profile.jpeg' %}{% endif %}"
+                            alt="Profile Picture" class="img-fluid" height="70px" width="70px">
+                    </td>
+                    <td>{{ i.emp_id }}</td>
+                    <td><a href="{% url 'edit_employee' pk=i.id %}">{{ i.first_name }} {{ i.last_name }}</a></td>
+                    <td>{{ i.phone_number }}</td>
+                    <td>{{ i.mail_id }}</td>
+                    <td>{{ i.address }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

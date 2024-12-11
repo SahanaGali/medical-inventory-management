@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Records</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/p.jpg' %}") no-repeat center center fixed;
+            background-color: #f4f4f4;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 80%;
+            margin-top: 20px;
+            background: #ffffffd1;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 5px;
+            background-color: #245be6d2;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .home-button svg {
+            margin-right: 8px;
+            fill: #fff;
+        }
+
+        .home-button:hover {
+            background-color: #0859bc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <button class="home-button" onclick="window.location.href='{% url 'admin_dashboard' %}'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
+            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
+        </svg>
+        Purchase
+    </button>
+    <div class="container">
+        <a href="{% url 'new_purchase' %}" class="btn">New Purchase</a>
+   
+        <table>
+            <thead>
+                <tr>
+                    <th>Dealer</th>
+                    <th>Phone number</th>
+                    <th>Tablet Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Sub Total</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for purchase in pur %}
+                    {% for item in purchase.items.all %}
+                        <tr>
+                            {% if forloop.first %}
+                                <td rowspan="{{ purchase.items.count }}"><a href="{% url 'edit_purchase' pk=purchase.id %}">{{ purchase.dealer }}</a></td>
+                                <td rowspan="{{ purchase.items.count }}">{{ purchase.phone }}</td>
+                            {% endif %}
+                            <td>{{ item.tablet_name }}</td>
+                            <td>{{ item.price }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.total }}</td>
+                            {% if forloop.first %}
+                                <td rowspan="{{ purchase.items.count }}">{{ purchase.total_amount }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+</body>
+</html>
+
+

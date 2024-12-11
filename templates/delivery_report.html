@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Book Format</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Bill Book Format header */
+        .bill-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .bill-header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Company info and invoice details */
+        .bill-info {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .bill-info div {
+            width: 48%;
+            margin-bottom: 20px;
+        }
+
+        .bill-info p {
+            margin: 5px 0;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .table-header th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .table-subtotal,
+        .table-tax,
+        .table-total {
+            text-align: center;
+        }
+
+        .table-subtotal td,
+        .table-tax td,
+        .table-total td {
+            font-weight: bold;
+        }
+
+        /* Footer styling */
+        .bill-footer {
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .bill-footer p {
+            margin: 0;
+        }
+
+        /* Button styling */
+        .button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .confirm-link {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .confirm-link:hover {
+            background-color: #218838;
+        }
+
+        @media (max-width: 768px) {
+            .bill-info {
+                flex-direction: column;
+            }
+
+            .bill-info div {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="bill-header">
+            <h1>Med Plus Invoice</h1>
+        </div>
+        <div class="bill-info">
+            <div>
+                <p><strong>Bill to</strong></p>
+                <p>Med Plus +</p>
+                <p>8th cross, Malleshwaram</p>
+                <p>Bangalore, Karnataka, 560352</p>
+                <p>Phone: +9183747839294</p>
+                <p>Email: medplus@company.com</p>
+            </div>
+            <div>
+                <p><strong>Invoice</strong> #{{ dlry.order_number }}</p>
+                <p><strong>Customer Name</strong> {{ dlry.sale.customer.first_name }} {{ dlry.sale.customer.last_name }}</p>
+                <!-- <p><strong>Delivery Address</strong> {{ dlry.sale.customer.address }}, {{ dlry.sale.customer.city }}, {{ dlry.sale.customer.state }}, {{ dlry.sale.customer.pincode }}</p> -->
+            </div>
+        </div>
+        <table>
+            <tr>
+                <th colspan="5" class="table-subtotal">Items Ordered</th>
+            </tr>
+            <tr class="table-header">
+                <th>Medicine</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Discount %</th>
+                <th>Sub Total</th>
+            </tr>
+            {% for item in dlry.sale.items.all %}
+            <tr>
+                <td>{{ item.medicine }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.discount }}</td>
+                <td>{{ item.sub_total }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="table-tax">
+                <th colspan="4">Tax %</th>
+                <td>{{ dlry.sale.tax }}</td>
+            </tr>
+            <tr class="table-total">
+                <th colspan="4">Total</th>
+                <td>{{ dlry.sale.total }}</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <button class="button" onclick="downloadPDF()">Download as PDF</button>
+        {% if dlry.status == 'DELIVERED' %}
+        <p>Sale Already Delivered</p>
+        {% else %}
+        <a href="{% url 'confirm_delivery' dlry.pk %}" class="confirm-link">Confirm Delivery</a>
+        {% endif %}
+        <div>Status: {{ dlry.status }}</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script>
+        function downloadPDF() {
+            var element = document.querySelector('.container');
+            html2pdf().from(element).set({
+                margin: 10,
+                filename: 'Report.pdf',
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).save();
+        }
+    </script>
+</body>
+
+</html>

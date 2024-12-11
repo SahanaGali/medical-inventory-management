@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 40px; /* Add more space around the form */
+            display: flex;
+            justify-content: center;
+            background: url("https://www.blockedge.io/blog/wp-content/uploads/2022/09/5-Ways-Blockchain-Technology-850x550.png") no-repeat center center fixed;
+            background-size: cover;
+            align-items: flex-start; /* Align form at the top */
+            min-height: 100vh;
+            box-sizing: border-box; /* Ensure padding is included in the height calculation */
+        }
+        form {
+            background: #aecbdd;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            margin-bottom: 40px; /* Add space at the bottom of the form */
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        form input[type="text"],
+        form input[type="file"],
+        form input[type="email"], /* Added email type for mail ID */
+        form input[type="number"], /* Added number type for salary */
+        form input[type="tel"], /* Added tel type for phone number */
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+        form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        form input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        h2{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>Add Admin</h2>
+        <div class="form-group">
+            <label for="user_name">UserName</label>
+            <input type="text" name="user_name" id="user_name">
+        </div>
+        
+        {{form.as_p}}
+        <input type="submit" value="Add Admin">
+    </form>
+</body>
+</html>

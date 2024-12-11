@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+    <title>Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: url("{% static 'images/m.jpg' %}") no-repeat center center fixed;
+            /* background-repeat: no-repeat; */
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            /* background-color: #f8f9fa; */
+        }
+
+        .container {
+            width: 400px;
+            padding: 16px;
+            margin: 50px auto;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #d8611c;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: #be531a;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #201616;
+            color: #fff;
+        }
+
+        .navbar-left .brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .navbar-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            background-color: #84c1c1;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="#" class="brand">Med Plus+</a>
+        </div>
+        <div class="navbar-right">
+            <a href="{% url 'login' %}" class="nav-button">Login</a>
+            <a href="{% url 'add_admin' %}" class="nav-button">Add Admin</a>
+            <a href="{% url 'register' %}" class="nav-button">Register Customer</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="username"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="username">
+
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password">
+
+            <button type="submit">Login</button><br>
+
+        </form>
+    </div>
+</body>
+
+</html>

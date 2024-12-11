@@ -1,0 +1,262 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Purchase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4d7;
+            background: url("{% static 'images/pur.jpeg' %}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+    
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+    
+        #form-container {
+            max-width: 800px;
+            margin: 20px auto; /* Added margin */
+            padding: 20px;
+            background-color: #ffffffd5;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    
+        .purchase-form {
+            margin-bottom: 20px;
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+    
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+    
+        th {
+            background-color: #f4f4f4;
+        }
+    
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #ff6f61; /* Changed button color */
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 10px 0;
+            font-weight: bold; /* Made text bold */
+        }
+    
+        button:hover {
+            background-color: #e24437; /* Darker color on hover */
+        }
+    
+        .total-amount-container {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    
+        .total-amount-container label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 5px;
+            background-color: #245be6d2;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .home-button svg {
+            margin-right: 8px;
+            fill: #fff;
+        }
+
+        .home-button:hover {
+            background-color: #0859bc;
+            text-decoration: none;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <button class="home-button" onclick="window.location.href='{% url 'admin_dashboard' %}'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
+            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
+        </svg>
+        Purchase
+    </button>
+    <form id="form-container" method="POST">
+        <h1>Add New Purchase</h1>
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th><label for="{{ form.dealer.id_for_label }}">Dealer Name</label></th>
+                <th><label for="{{ form.phone.id_for_label }}">Phone Number</label></th>
+            </tr>
+            <tr>
+                <td>{{ form.dealer }}</td>
+                <td>{{ form.phone }}</td>
+            </tr>
+        </table>
+        {{ purchase_formset.management_form }}
+        {% for form in purchase_formset %}
+        <div class="purchase-form">
+            <table>
+                <tr>
+                    <th><label for="{{ form.tablet_name.id_for_label }}">Tablet Name</label></th>
+                    <th><label for="{{ form.price.id_for_label }}">Price</label></th>
+                    <th><label for="{{ form.quantity.id_for_label }}">Quantity</label></th>
+                    <th><label for="{{ form.total.id_for_label }}">Sub Total</label></th>
+                </tr>
+                <tr>
+                    <td>{{ form.tablet_name }}</td>
+                    <td>{{ form.price }}</td>
+                    <td>{{ form.quantity }}</td>
+                    <td>{{ form.total }}</td>
+                </tr>
+            </table>
+        </div>
+        {% endfor %}
+        <button id="add-form" type="button">Add Another Tablet</button>
+        <div class="total-amount-container">
+            <label for="{{ form.total_amount.id_for_label }}">Total Amount:</label>
+            {{ form.total_amount }}
+        </div>
+        <button type="submit">Create Purchase</button>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#form-container').on('change', '[id$=dealer]', function () {
+                var dealerId = $(this).val();
+                var phoneField = $(this).closest('tr').find('[id$=phone]');
+                if (dealerId) {
+                    $.ajax({
+                        url: '{% url "get_dealer_phone" %}',
+                        data: {
+                            'dealer_id': dealerId
+                        },
+                        success: function (data) {
+                            phoneField.val(data.phone);
+                        }
+                    });
+                } else {
+                    phoneField.val('');
+                }
+            });
+
+            $('#form-container').on('change', '[id$=tablet_name]', function () {
+                var $this = $(this);
+                var tabletId = $this.val();
+                if (tabletId) {
+                    $.ajax({
+                        url: '{% url "get_medicine_price" %}',
+                        data: {
+                            'medicine_id': tabletId
+                        },
+                        success: function (data) {
+                            $this.closest('tr').find('[id$=price]').val(data.price);
+                        }
+                    });
+                } else {
+                    $this.closest('tr').find('[id$=price]').val('');
+                }
+            });
+
+            let purchaseForm = document.querySelectorAll(".purchase-form");
+            let container = document.querySelector("#form-container");
+            let addButton = document.querySelector("#add-form");
+            let totalForms = document.querySelector("#id_form-TOTAL_FORMS");
+            let totalAmountField = document.querySelector('input[name$="total_amount"]');
+
+            let formNum = purchaseForm.length - 1;
+            addButton.addEventListener('click', addForm);
+
+            function addForm(e) {
+                e.preventDefault();
+
+                let newForm = purchaseForm[0].cloneNode(true);
+                let formRegex = RegExp(`form-(\\d){1}-`, 'g');
+
+                formNum++;
+                newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`);
+                container.insertBefore(newForm, addButton);
+
+                totalForms.setAttribute('value', `${formNum + 1}`);
+            }
+
+            container.addEventListener('input', updateTotal);
+
+            function updateTotal(e) {
+                if (e.target && e.target.matches('input[type="number"]')) {
+                    let priceField = e.target.closest('tr').querySelector('input[name$="price"]');
+                    let quantityField = e.target.closest('tr').querySelector('input[name$="quantity"]');
+                    let totalField = e.target.closest('tr').querySelector('input[name$="total"]');
+
+                    let price = parseFloat(priceField.value) || 0;
+                    let quantity = parseFloat(quantityField.value) || 0;
+                    let subtotal = price * quantity;
+
+                    totalField.value = subtotal.toFixed(2);
+                    updateTotalAmount();
+                } else if (e.target && e.target.matches('select[name$="tablet_name"]')) {
+                    let priceField = e.target.closest('tr').querySelector('input[name$="price"]');
+                    let tabletName = e.target.value;
+                    let price = tabletPrices[tabletName] || 0;
+                    priceField.value = price;
+                    updateTotal(e);
+                }
+            }
+
+            function updateTotalAmount() {
+                let total = 0;
+                document.querySelectorAll('input[name$="total"]').forEach(function(subtotalField) {
+                    total += parseFloat(subtotalField.value) || 0;
+                });
+                totalAmountField.value = total.toFixed(2);
+            }
+        });
+    </script>
+</body>
+
+</html>

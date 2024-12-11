@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            background: url("{% static 'images/sc.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffffcb;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .header a {
+            color: #fff;
+            text-decoration: none;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .header a:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #245be6d2;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .home-button svg {
+            margin-right: 8px;
+            fill: #fff;
+        }
+
+        .home-button:hover {
+            background-color: #0859bc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <button class="home-button" onclick="window.location.href='{% url 'admin_dashboard' %}'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
+            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
+        </svg>
+        Sale
+    </button>
+
+    <div class="container">
+        <div class="header">
+            <a href="{% url 'new_sale' %}">New Sale</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Phone</th>
+                    <th>Tablet Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Discount %</th>
+                    <th>Tax %</th>
+                    <th>Total</th>
+                    <th>Sale Option</th>
+                    <th>Net Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in s %}
+                    {% for item in sale.items.all %}
+                        <tr>
+                            {% if forloop.first %}
+                            <td rowspan="{{ sale.items.count }}"><a href="{% url 'edit_sale' pk=sale.id %}">{{ sale.customer }}</a></td>
+                            <td rowspan="{{ sale.items.count }}">{{ sale.phone }}</td>
+                            {% endif %}
+                            <td>{{ item.medicine }}</td>
+                            <td>{{ item.price }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.discount }}</td>
+                            <td>{{ sale.tax }}</td>
+                            <td>{{ item.sub_total }}</td>
+                            {% if forloop.first %}
+                            <td rowspan="{{ sale.items.count }}">{{ sale.confirmed }}</td>
+                            <td rowspan="{{ sale.items.count }}">{{ sale.total }}</td>
+                            {% endif %}
+
+                        </tr>
+                    {% endfor %}
+                {% empty %}
+                    <tr>
+                        <td colspan="8">No sales found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

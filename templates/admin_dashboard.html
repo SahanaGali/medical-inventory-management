@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Center content vertically */
+            height: 100vh; /* Full viewport height */
+            background-image: url('https://img.freepik.com/free-photo/flat-lay-medical-desk-composition-with-copy-space_23-2148502943.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #fff; /* Make sure text is readable */
+        }
+        nav {
+            background-color: rgba(9, 10, 12, 0.8); /* Make the nav bar slightly transparent */
+            padding: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: fixed;
+            top: 0;
+        }
+        nav h4 {
+            color: #fff;
+            margin: 0;
+            font-size: 2rem;
+        }
+        .profile {
+            position: absolute;
+            top: 80px;
+            right: 50px;
+            background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent white background */
+            padding: 10px;
+            border-radius: 5px;
+            text-align: right; /* Align text to the right */
+        }
+        .profile h4 {
+            margin: 15px 0;
+            font-size: 1.2rem;
+            color: #0f0f0f;
+        }
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Create a grid layout */
+            gap: 20px;
+            margin: 20px;
+            width: 100%;
+            max-width: 800px; /* Set a max-width for the container */
+        }
+        .button-container a {
+            text-decoration: none;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        .button-container a:nth-child(1) {
+            background-color: #007bff;
+        }
+        .button-container a:nth-child(2) {
+            background-color: #28a745;
+        }
+        .button-container a:nth-child(3) {
+            background-color: #17a2b8;
+        }
+        .button-container a:nth-child(4) {
+            background-color: #ffc107;
+        }
+        .button-container a:nth-child(5) {
+            background-color: #9846a9; /* Color for the CRM button */
+        }
+        .button-container a:nth-child(6) {
+            background-color: #dc3545;
+        }
+        .button-container a:nth-child(7) {
+            background-color: #6f42c1;
+        }
+        .button-container a:nth-child(8) {
+            background-color: #fd7e14;
+        }
+        .button-container a:nth-child(9){
+            background-color: #3ab58c;
+        }
+        .button-container a:hover {
+            opacity: 0.8; /* Slight opacity change on hover for all buttons */
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h4>Admin Dashboard</h4>
+    </nav>
+    <div class="profile">
+        <h4>Hi, {{name.first_name}} {{name.last_name}}</h4>
+        <h4>Role: {{rol.role}}</h4>
+    </div>
+    <div class="button-container">
+        <a href="{% url 'dealer_management' %}">Dealer Management</a>
+        <a href="{% url 'medicine_management' %}">Medicine Management</a>
+        <a href="{% url 'emp_management' %}">Employee Management</a>
+        <a href="{% url 'customer_management' %}">Customer Management</a>
+        <a href="{% url 'crm_mang' %}">CRM</a>
+        <a href="{% url 'sale_mang' %}">Sale Management</a>
+        <a href="{% url 'delivery_mang' %}">Delivery Management</a>
+        <a href="{% url 'purchase_mang' %}">Purchase Management</a>
+        <a href="{% url 'admin_logout' %}">Logout</a>
+    </div>
+</body>
+</html>

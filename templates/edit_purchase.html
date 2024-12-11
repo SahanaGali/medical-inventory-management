@@ -1,0 +1,347 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Purchase</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url("{% static 'images/pur.jpeg' %}") no-repeat center center fixed;
+            background-size: cover;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.836);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 450px;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        select:focus {
+            border-color: #80bdff;
+            outline: none;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .button-group button,
+        .button-group a {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            box-sizing: border-box;
+            width: 100%; /* Ensure buttons take full width */
+            margin-bottom: 10px; /* Add space between buttons */
+        }
+
+        .button-group button.confirm-button {
+            background: #28a745; /* Green for confirm button */
+            color: white;
+            margin-bottom: 10px; /* Add space after confirm button */
+        }
+
+        .button-group button.save-button {
+            background: #007bff; /* Blue for save button */
+            color: white;
+        }
+
+        .button-group a.delete-link {
+            background: #dc3545; /* Red for delete link */
+            color: white;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .button-group button,
+        .button-group a {
+            width: calc(50% - 5px); /* Adjust width of buttons */
+        }
+
+        .button-group a.delete-link:hover {
+            background: #c82333;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: transparent;
+            border: none;
+            font-size: 20px;
+        }
+
+        .home-button a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .home-button a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <button class="home-button"><a href="{% url 'admin_dashboard' %}"><i class="fas fa-home"></i> Home</a></button>
+
+    <div class="container">
+        <h2>Edit Purchase</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            {{ formset.management_form }}
+            {% for form in formset %}
+                {{ form.as_p }}
+            {% endfor %}
+            
+            <div class="button-group">
+                {% if purchase.status %}
+            <p>Purchase Already Confirmed</p>
+            {% else %}
+            
+            <button type="submit" class="confirm-button"><a href="{% url 'confirm_purchase' purchase.pk %}" class="confirm-link">Confirm to Purchase</a></button>
+            {% endif %}
+                
+                <button type="submit" class="save-button">Save</button>  <a href="{% url 'delete_purchase' pk=purchase.id %}" class="delete-link" onclick="return confirmDelete();">Delete</a>
+               
+            </div>
+        </form>
+       
+    </div>
+    <script>
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this dealer?');
+        }
+    </script>
+</body>
+</html> -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Purchase</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url("{% static 'images/pur.jpeg' %}") no-repeat center center fixed;
+            background-size: cover;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.836);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 450px;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        select:focus {
+            border-color: #80bdff;
+            outline: none;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .button-group button,
+        .button-group a {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            box-sizing: border-box;
+            width: 100%; /* Ensure buttons take full width */
+            margin-bottom: 10px; /* Add space between buttons */
+        }
+
+        .button-group button.confirm-button {
+            background: #28a745; /* Green for confirm button */
+            color: white;
+            width: 110%;
+            margin-left: -10px;
+            margin-bottom: 10px; /* Add space after confirm button */
+        }
+
+        .button-group button.save-button {
+            background: #007bff; /* Blue for save button */
+            color: white;
+        }
+
+        .button-group a.delete-link {
+            background: #dc3545; /* Red for delete link */
+            color: white;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .button-group button,
+        .button-group a {
+            width: calc(50% - 5px); /* Adjust width of buttons */
+        }
+
+        .button-group a.delete-link:hover {
+            background: #c82333;
+        }
+
+        .button-group .confirm-link {
+            text-decoration: none; /* Remove underline */
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: transparent;
+            border: none;
+            font-size: 20px;
+        }
+
+        .home-button a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .home-button a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <button class="home-button"><a href="{% url 'admin_dashboard' %}"><i class="fas fa-home"></i> Home</a></button>
+
+    <div class="container">
+        <h2>Edit Purchase</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            {{ formset.management_form }}
+            {% for form in formset %}
+                {{ form.as_p }}
+            {% endfor %}
+            
+            <div class="button-group">
+                {% if not purchase.status %}
+                    <a href="{% url 'confirm_purchase' purchase.pk %}" class="confirm-link"><button type="button" class="confirm-button">Confirm to Purchase</button></a>
+                {% else %}
+                    <p>Purchase Already Confirmed</p>
+                {% endif %}
+                
+                <button type="submit" class="save-button">Save</button>
+                <a href="{% url 'delete_purchase' pk=purchase.id %}" class="delete-link" onclick="return confirmDelete();">Delete</a>
+            </div>
+        </form>
+    </div>
+    <script>
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this dealer?');
+        }
+    </script>
+</body>
+</html>

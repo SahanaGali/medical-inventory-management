@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Delivery Management</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        table {
+            margin-top: 20px;
+        }
+
+        .modal-header {
+            border-bottom: none;
+        }
+
+        .modal-footer {
+            border-top: none;
+        }
+
+        .btn-link a {
+            color: white;
+            text-decoration: none;
+        }
+        .home-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #4d75b2d2;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .home-button svg {
+            margin-right: 8px;
+            fill: #fff;
+        }
+
+        .home-button:hover {
+            background-color: #182ebb;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="home-button" onclick="window.location.href='{% url 'admin_dashboard' %}'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
+            <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
+        </svg>
+        Delivery
+    </button>
+
+    <h1>Delivery Management</h1>
+
+    <!-- <button class="btn btn-secondary mb-3"><a href="{% url 'confirm' %}" class="text-white">Confirm sale order</a></button> -->
+
+    <table class="table table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th>Order Id</th>
+                <th>Customer Name</th>
+                <th>Delivery Address</th>
+                <th>Item Ordered</th>
+                <th>Quantity</th>
+                <th>Delivery Status</th>
+                <!-- <th>Actions</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in dlry %}
+            {% for item in i.sale.items.all %}
+            {% if i.sale.confirmed %}
+            <tr>
+                {% if forloop.first %}
+                <td rowspan="{{ i.sale.items.count }}"><a href="{% url 'delivery_report' pk=i.id %}">{{i.order_number}}</a></td>
+                <td rowspan="{{ i.sale.items.count }}">{{ i.sale.customer }}</td>
+                <td rowspan="{{ i.sale.items.count }}">{{ i.sale.customer.address }}, {{ i.sale.customer.city }}, {{ i.sale.customer.state }}, {{ i.sale.customer.pincode }}</td>
+                {% endif %}
+                <td >{{ item.medicine }}</td>
+                <td >{{ item.quantity }}</td>
+                {% if forloop.first %}
+                <td rowspan="{{ i.sale.items.count }}">{{ i.status }}</td>
+                <!-- <td rowspan="{{ i.sale.items.count }}">
+                    <button class="btn btn-secondary" onclick="openModal('{{ i.id }}', '{{ i.status }}')">Change Status</button>
+                </td> -->
+                {% endif %}
+            </tr>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <!--  -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function openModal(id, status) {
+            $('#deliveryId').val(id);
+            $('#status').val(status);
+            $('#myModal').modal('show');
+        }
+    </script>
+</body>
+
+</html>

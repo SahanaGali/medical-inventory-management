@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 0.5em 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 1em;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 2em;
+            text-align: center;
+        }
+
+        main h1 {
+            color: #4CAF50;
+        }
+
+        a {
+            display: inline-block;
+            margin: 1em 0;
+            padding: 0.75em 1.5em;
+            border: 2px solid #4CAF50;
+            color: #4CAF50;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>CRM Dashboard</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'view_lead' %}">View Leads</a></li>
+            <li><a href="{% url 'view_opportunity' %}">View Opportunities</a></li>
+            <li><a href="{% url 'view_sale_order' %}">View Sale Orders</a></li>
+            <!-- <li><a href="{% url 'fetch' %}">Fetch mail</a></li> -->
+             <li><a href="{% url 'mail_configuration' %}">Mail Configuration</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- <main>
+        <h1>Welcome to the CRM Dashboard</h1>
+        <p>Select an option from the navigation menu to get started.</p>
+    </main> -->
+    <!-- <footer>
+        &copy; 2024 CRM Dashboard. All rights reserved.
+    </footer> -->
+</body>
+</html>

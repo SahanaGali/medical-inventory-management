@@ -1,0 +1,282 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Helvetica', sans-serif;
+        }
+        .header {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .customer-info {
+            margin: 20px 0;
+        }
+        .customer-info p {
+            margin: 5px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">MED PLUS+</div>
+    <div class="customer-info">
+        <p><strong>Customer:</strong> {{ customer }}</p>
+        <p><strong>Phone:</strong> {{ phone }}</p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Medicine</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Sub Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.medicine }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.discount }}</td>
+                <td>{{ item.sub_total }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="5">Total</td>
+                <td>{{ total }}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Book Format</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Bill Book Format header */
+        .bill-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .bill-header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Company info and invoice details */
+        .bill-info {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .bill-info div {
+            width: 48%;
+            margin-bottom: 20px;
+        }
+
+        .bill-info p {
+            margin: 5px 0;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .table-header th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .table-subtotal,
+        .table-tax,
+        .table-total {
+            text-align: center;
+        }
+
+        .table-subtotal td,
+        .table-tax td,
+        .table-total td {
+            font-weight: bold;
+        }
+
+        /* Footer styling */
+        .bill-footer {
+            padding: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .bill-footer p {
+            margin: 0;
+        }
+
+        /* Button styling */
+        .button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .confirm-link {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .confirm-link:hover {
+            background-color: #218838;
+        }
+
+        @media (max-width: 768px) {
+            .bill-info {
+                flex-direction: column;
+            }
+
+            .bill-info div {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="bill-header">
+            <h1>Med Plus Invoice</h1>
+        </div>
+        <div class="bill-info">
+            <div>
+                <p><strong>Bill to</strong></p>
+                <p>Med Plus +</p>
+                
+                <p>Email: medplus@company.com</p>
+            </div>
+            <div>
+                <p>8th cross, Malleshwaram</p>
+                <p>Bangalore, Karnataka, 560352</p>
+                <p>Phone: +9183747839294</p>
+        </div>
+        <table>
+            <tr>
+                <th>Name</th>
+                <td colspan="2">{{ customer }}</td>
+                <th>Phone</th>
+                <td colspan="2">{{ phone }}</td>
+            </tr>
+            <tr>
+                <th colspan="6" class="table-subtotal">Items Ordered</th>
+            </tr>
+            <tr class="table-header">
+                <th>#</th>
+                <th>Medicine</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Sub Total</th>
+            </tr>
+            {% for item in items %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.medicine }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.discount }}</td>
+                <td>{{ item.sub_total }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="5">Total</td>
+                <td>{{ total }}</td>
+            </tr>
+        </table>
