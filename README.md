@@ -47,13 +47,11 @@ The **Medical Shop Inventory Management System** is a comprehensive software sol
 ## Technologies Used
 
 - **Frontend:**
-  - HTML, CSS, JavaScript (or any frontend framework like React or Angular)
+  - HTML, CSS, JavaScript,Ajax
 - **Backend:**
-  - Python (Flask/Django) or Node.js (Express)
+  - Python (Django) 
 - **Database:**
-  - MySQL, PostgreSQL, or SQLite
-- **Authentication:**
-  - JWT (JSON Web Tokens) for secure login
+  - PostgreSQL
 - **Version Control:**
   - Git, GitHub
 
